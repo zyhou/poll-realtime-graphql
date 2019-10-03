@@ -1,0 +1,42 @@
+.half-circle {
+    --percentage: 0;
+    --fill: #ffff68;
+    width: 1200px;
+    height: 600px;
+    position: relative;
+    overflow: hidden;
+    color: var(--fill);
+}
+
+.half-circle::after {
+    content: '';
+    width: 1200px;
+    height: 1200px;
+    border: 200px solid;
+    border-color: #e232a1 #e232a1 var(--fill) var(--fill);
+    position: absolute;
+    border-radius: 50%;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    transform: rotate(calc(1deg * (-45 + var(--percentage) * 1.8)));
+    animation: fillAnimation 1s ease-in;
+}
+
+@keyframes fillAnimation {
+    0% {
+        transform: rotate(-45deg);
+    }
+    50% {
+        transform: rotate(135deg);
+    }
+}
+
+@keyframes fillGraphAnimation {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+}

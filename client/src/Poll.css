@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 50px;
+}
+
+button {
+    background: none;
+    cursor: pointer;
+    font-size: 40px;
+    font-weight: 600;
+    padding: 1em 2em;
+    letter-spacing: 0.05rem;
+    border-radius: 30px;
+    border: 10px solid;
+    margin: 50px;
+}
+
+.button-left {
+    color: #ffff68;
+    border-color: #ffff68;
+}
+
+.button-right {
+    color: #e232a1;
+    border-color: #e232a1;
+}
