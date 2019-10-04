@@ -6,8 +6,11 @@
     margin: 50px;
 }
 
-button {
-    background: none;
+label {
+    display: block;
+}
+
+input + div {
     cursor: pointer;
     font-size: 40px;
     font-weight: 600;
@@ -18,12 +21,26 @@ button {
     margin: 50px;
 }
 
-.button-left {
+input[type='radio'] {
+    appearance: none;
+}
+
+.radio-left {
     color: #ffff68;
     border-color: #ffff68;
 }
 
-.button-right {
+.radio-right {
     color: #e232a1;
     border-color: #e232a1;
+}
+
+.radio-left input:checked + div {
+    background-color: #ffff68;
+    color: #282c34;
+}
+
+.radio-right input:checked + div {
+    background-color: #e232a1;
+    color: #282c34;
 }
