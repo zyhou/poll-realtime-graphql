@@ -31,7 +31,7 @@ const Poll = () => {
                     value="1"
                     onChange={handleChange}
                 />
-                <div>who</div>
+                <div>Oui</div>
             </label>
             <label className="radio-right">
                 <input
@@ -40,7 +40,7 @@ const Poll = () => {
                     value="2"
                     onChange={handleChange}
                 />
-                <div>who</div>
+                <div>Oui</div>
             </label>
         </div>
     );

@@ -26,7 +26,7 @@ const typeDefs = gql`
 `;
 
 const question = 'On mange burger ?';
-const answers = [{ option: 'Oui' }, { option: 'Non' }];
+const answers = [{ option: 'Oui' }, { option: 'Oui' }];
 const votes = [];
 
 const resolvers = {
