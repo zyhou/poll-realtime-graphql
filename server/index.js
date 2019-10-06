@@ -25,16 +25,13 @@ const typeDefs = gql`
     }
 `;
 
-const poll = {
-    question: 'On mange burger ?',
-    answers: [{ option: 'Oui' }, { option: 'Non' }],
-};
-
+const question = 'On mange burger ?';
+const answers = [{ option: 'Oui' }, { option: 'Non' }];
 const votes = [];
 
 const resolvers = {
     Query: {
-        poll: () => ({ ...poll }),
+        poll: () => ({ question }),
     },
     Poll: {
         anwsers: () => {
@@ -44,13 +41,13 @@ const resolvers = {
             }, {});
 
             const nbVotes = votes.length;
-            const answers = poll.answers.map((answer, index) => ({
+            const answersWithPercent = answers.map((answer, index) => ({
                 ...answer,
                 percent:
                     Math.round((sumChoice[index + 1] / nbVotes) * 100) || 0,
             }));
 
-            return answers;
+            return answersWithPercent;
         },
     },
     Mutation: {
