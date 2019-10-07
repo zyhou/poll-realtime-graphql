@@ -1,11 +1,11 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useSubscription } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import './Board.css';
 
 import HalfCircle from './HalfCircle';
 
-const POLL = gql`
+const POLL_SUBSCRIPTION = gql`
     {
         poll {
             question
@@ -18,7 +18,7 @@ const POLL = gql`
 `;
 
 const Board = () => {
-    const { loading, error, data } = useQuery(POLL);
+    const { loading, error, data } = useSubscription(POLL_SUBSCRIPTION);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;

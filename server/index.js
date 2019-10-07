@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer, gql, PubSub } = require('apollo-server');
 
 const typeDefs = gql`
     type Poll {
@@ -23,11 +23,18 @@ const typeDefs = gql`
     type Mutation {
         addVote(id: ID!, choice: Int!): Vote!
     }
+
+    type Subscription {
+        voteAdded: Poll
+    }
 `;
 
 const question = 'On mange burger ?';
 const answers = [{ option: 'Oui' }, { option: 'Oui' }];
 const votes = [];
+
+const pubsub = new PubSub();
+const VOTE_ADDED = 'VOTE_ADDED';
 
 const resolvers = {
     Query: {
@@ -52,8 +59,14 @@ const resolvers = {
     },
     Mutation: {
         addVote: (_, { id, choice }) => {
+            pubsub.publish(VOTE_ADDED, { voteAdded: { question: 'ui' } });
             votes.push({ id, choice });
             return { id, choice };
+        },
+    },
+    Subscription: {
+        voteAdded: {
+            subscribe: () => pubsub.asyncIterator([VOTE_ADDED]),
         },
     },
 };
