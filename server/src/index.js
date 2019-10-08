@@ -1,4 +1,6 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer, gql, PubSub } = require('apollo-server');
+
+const { calculAnwsersPercent } = require('./poll');
 
 const typeDefs = gql`
     type Poll {
@@ -23,11 +25,18 @@ const typeDefs = gql`
     type Mutation {
         addVote(id: ID!, choice: Int!): Vote!
     }
+
+    type Subscription {
+        voteAdded: [Answer]!
+    }
 `;
 
 const question = 'On mange burger ?';
 const answers = [{ option: 'Oui' }, { option: 'Oui' }];
 const votes = [];
+
+const pubsub = new PubSub();
+const VOTE_ADDED = 'VOTE_ADDED';
 
 const resolvers = {
     Query: {
@@ -35,25 +44,21 @@ const resolvers = {
     },
     Poll: {
         anwsers: () => {
-            const sumChoice = votes.reduce((result, vote) => {
-                result[vote.choice] = (result[vote.choice] || 0) + 1;
-                return result;
-            }, {});
-
-            const nbVotes = votes.length;
-            const answersWithPercent = answers.map((answer, index) => ({
-                ...answer,
-                percent:
-                    Math.round((sumChoice[index + 1] / nbVotes) * 100) || 0,
-            }));
-
-            return answersWithPercent;
+            return calculAnwsersPercent(votes, answers);
         },
     },
     Mutation: {
         addVote: (_, { id, choice }) => {
             votes.push({ id, choice });
+            pubsub.publish(VOTE_ADDED, {
+                voteAdded: calculAnwsersPercent(votes, answers),
+            });
             return { id, choice };
+        },
+    },
+    Subscription: {
+        voteAdded: {
+            subscribe: () => pubsub.asyncIterator([VOTE_ADDED]),
         },
     },
 };
