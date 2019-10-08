@@ -15,11 +15,13 @@ const ADD_VOTE = gql`
 
 const Poll = () => {
     const [addVote] = useMutation(ADD_VOTE);
+    const [disabled, setDisabled] = React.useState(false);
 
     const handleChange = event => {
         addVote({
             variables: { id: 1, choice: parseInt(event.target.value, 10) },
         });
+        setDisabled(!disabled);
     };
 
     return (
@@ -30,6 +32,7 @@ const Poll = () => {
                     name="answer"
                     value="1"
                     onChange={handleChange}
+                    disabled={disabled}
                 />
                 <div>Oui</div>
             </label>
@@ -39,6 +42,7 @@ const Poll = () => {
                     name="answer"
                     value="2"
                     onChange={handleChange}
+                    disabled={disabled}
                 />
                 <div>Oui</div>
             </label>
