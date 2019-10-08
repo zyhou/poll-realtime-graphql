@@ -1,5 +1,7 @@
 const { ApolloServer, gql, PubSub } = require('apollo-server');
 
+const { calculAnwsersPercent } = require('./poll');
+
 const typeDefs = gql`
     type Poll {
         question: String!
@@ -25,7 +27,7 @@ const typeDefs = gql`
     }
 
     type Subscription {
-        voteAdded: Poll
+        voteAdded: [Answer]!
     }
 `;
 
@@ -42,25 +44,15 @@ const resolvers = {
     },
     Poll: {
         anwsers: () => {
-            const sumChoice = votes.reduce((result, vote) => {
-                result[vote.choice] = (result[vote.choice] || 0) + 1;
-                return result;
-            }, {});
-
-            const nbVotes = votes.length;
-            const answersWithPercent = answers.map((answer, index) => ({
-                ...answer,
-                percent:
-                    Math.round((sumChoice[index + 1] / nbVotes) * 100) || 0,
-            }));
-
-            return answersWithPercent;
+            return calculAnwsersPercent(votes, answers);
         },
     },
     Mutation: {
         addVote: (_, { id, choice }) => {
-            pubsub.publish(VOTE_ADDED, { voteAdded: { question: 'ui' } });
             votes.push({ id, choice });
+            pubsub.publish(VOTE_ADDED, {
+                voteAdded: calculAnwsersPercent(votes, answers),
+            });
             return { id, choice };
         },
     },

@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import ApolloClient from 'apollo-boost';
+import { ApolloClient } from 'apollo-client';
 import { ApolloProvider } from '@apollo/react-hooks';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { split } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
@@ -17,7 +18,7 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new WebSocketLink({
-    uri: `ws://localhost:4000/`,
+    uri: `ws://localhost:4000/graphql`,
     options: {
         reconnect: true,
     },
@@ -25,11 +26,8 @@ const wsLink = new WebSocketLink({
 
 const link = split(
     ({ query }) => {
-        const definition = getMainDefinition(query);
-        return (
-            definition.kind === 'OperationDefinition' &&
-            definition.operation === 'subscription'
-        );
+        const { kind, operation } = getMainDefinition(query);
+        return kind === 'OperationDefinition' && operation === 'subscription';
     },
     wsLink,
     httpLink,
@@ -37,6 +35,7 @@ const link = split(
 
 const client = new ApolloClient({
     link,
+    cache: new InMemoryCache(),
 });
 
 ReactDOM.render(
