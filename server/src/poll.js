@@ -1,4 +1,4 @@
-const calculAnwsersPercent = (votes, answers) => {
+const calculAnswersPercent = (votes, answers) => {
     const sumChoice = votes.reduce((result, vote) => {
         result[vote.choice] = (result[vote.choice] || 0) + 1;
         return result;
@@ -14,5 +14,5 @@ const calculAnwsersPercent = (votes, answers) => {
 };
 
 module.exports = {
-    calculAnwsersPercent,
+    calculAnswersPercent,
 };

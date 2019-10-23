@@ -1,8 +1,18 @@
 import React from 'react';
 import { gql } from 'apollo-boost';
-import { useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import './Poll.css';
+
+const POLL_QUERY = gql`
+    {
+        poll {
+            answers {
+                option
+            }
+        }
+    }
+`;
 
 const ADD_VOTE = gql`
     mutation AddVote($id: ID!, $choice: Int!) {
@@ -14,6 +24,8 @@ const ADD_VOTE = gql`
 `;
 
 const Poll = () => {
+    const { loading, error, data } = useQuery(POLL_QUERY);
+
     const [addVote] = useMutation(ADD_VOTE);
     const [disabled, setDisabled] = React.useState(false);
 
@@ -23,6 +35,13 @@ const Poll = () => {
         });
         setDisabled(!disabled);
     };
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :(</p>;
+
+    const {
+        poll: { answers },
+    } = data;
 
     return (
         <div className="container">
@@ -34,7 +53,7 @@ const Poll = () => {
                     onChange={handleChange}
                     disabled={disabled}
                 />
-                <div>Yes</div>
+                <div>{answers[0].option}</div>
             </label>
             <label className="radio-right">
                 <input
@@ -44,7 +63,7 @@ const Poll = () => {
                     onChange={handleChange}
                     disabled={disabled}
                 />
-                <div>Yes</div>
+                <div>{answers[1].option}</div>
             </label>
         </div>
     );

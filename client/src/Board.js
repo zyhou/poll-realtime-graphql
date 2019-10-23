@@ -18,7 +18,7 @@ const POLL_QUERY = gql`
     {
         poll {
             question
-            anwsers {
+            answers {
                 percent
                 option
             }
@@ -26,12 +26,12 @@ const POLL_QUERY = gql`
     }
 `;
 
-const GraphAnwsers = ({ anwsers }) => {
+const GraphAnswers = ({ answers }) => {
     const { error, data } = useSubscription(VOTE_SUBSCRIPTION);
 
     if (error) return <p>Error :(</p>;
 
-    const choices = (data && data.voteAdded) || anwsers;
+    const choices = (data && data.voteAdded) || answers;
 
     return (
         <div className="halfcircle-container">
@@ -55,7 +55,7 @@ const Board = () => {
     return (
         <React.Fragment>
             <h1>{poll.question}</h1>
-            <GraphAnwsers anwsers={poll.anwsers} />
+            <GraphAnswers answers={poll.answers} />
         </React.Fragment>
     );
 };
