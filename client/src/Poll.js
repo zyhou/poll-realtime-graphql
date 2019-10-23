@@ -34,7 +34,7 @@ const Poll = () => {
                     onChange={handleChange}
                     disabled={disabled}
                 />
-                <div>Oui</div>
+                <div>Yes</div>
             </label>
             <label className="radio-right">
                 <input
@@ -44,7 +44,7 @@ const Poll = () => {
                     onChange={handleChange}
                     disabled={disabled}
                 />
-                <div>Oui</div>
+                <div>Yes</div>
             </label>
         </div>
     );

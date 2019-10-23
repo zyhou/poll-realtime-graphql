@@ -31,8 +31,8 @@ const typeDefs = gql`
     }
 `;
 
-const question = 'On mange burger ?';
-const answers = [{ option: 'Oui' }, { option: 'Oui' }];
+const question = 'We eat burger?';
+const answers = [{ option: 'Yes' }, { option: 'Yes' }];
 const votes = [];
 
 const pubsub = new PubSub();
@@ -63,7 +63,12 @@ const resolvers = {
     },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    introspection: true,
+    playground: true,
+});
 
 server.listen().then(({ url }) => {
     console.log(`🚀  Server ready at ${url}`);

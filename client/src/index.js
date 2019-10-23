@@ -13,12 +13,14 @@ import './index.css';
 
 import App from './App';
 
+const { REACT_APP_BASE_API_URL } = process.env;
+
 const httpLink = new HttpLink({
-    uri: 'http://localhost:4000/graphql',
+    uri: `http://${REACT_APP_BASE_API_URL}/graphql`,
 });
 
 const wsLink = new WebSocketLink({
-    uri: `ws://localhost:4000/graphql`,
+    uri: `ws://${REACT_APP_BASE_API_URL}/graphql`,
     options: {
         reconnect: true,
     },
