@@ -3,8 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 50px;
-    height: 100vh;
+    height: 100%;
 }
 
 label {
@@ -19,11 +18,11 @@ input[type='radio'] + div {
     letter-spacing: 0.05rem;
     border-radius: 30px;
     border: 10px solid;
-    margin: 50px;
+    margin-top: 50px;
 }
 
 input[type='radio'] {
-    appearance: none;
+    display: none;
 }
 
 input[type='radio']:disabled + div {
