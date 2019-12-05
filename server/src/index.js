@@ -1,6 +1,6 @@
 const { ApolloServer, gql, PubSub } = require('apollo-server');
 
-const { calculAnswersPercent } = require('./poll');
+const { computeAnswersPercent } = require('./poll');
 
 const typeDefs = gql`
     type Poll {
@@ -50,14 +50,14 @@ const resolvers = {
     },
     Poll: {
         answers: () => {
-            return calculAnswersPercent(votes, answers);
+            return computeAnswersPercent(votes, answers);
         },
     },
     Mutation: {
         addVote: (_, { id, choice }) => {
             votes.push({ id, choice });
             pubsub.publish(VOTE_ADDED, {
-                voteAdded: calculAnswersPercent(votes, answers),
+                voteAdded: computeAnswersPercent(votes, answers),
             });
             return { id, choice };
         },
